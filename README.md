@@ -9,10 +9,10 @@
 2. Запустите командную строку
 3. В командной строке ввести `mvn clean package`
 
-### Запуск
+### Запуск на Linux
 1. Перейдите в папку с проектом
 2. Запустить командную строку
-3. В командной строке ввести `java -jar target\testTaskJSONReader-1.0-SNAPSHOT.jar`
+3. В командной строке ввести `java -jar target/testTaskJSONReader-1.0-SNAPSHOT.jar`
 
 ### Результат запуска программы в терминале Linux
 ![Screanshot](https://github.com/Drendor1903/test_task_java/blob/master/image.png)
