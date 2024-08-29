@@ -6,11 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.frolov.models.Ticket;
 
 import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +20,6 @@ public class App
             List<Ticket> tickets = getTickets();
             differenceBetweenAverageAndMedianPrice(tickets);
             minFlightTimeBetweenCities(tickets);
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -38,6 +34,7 @@ public class App
         JsonNode ticketsNode = jsonNode.get("tickets");
 
         return objectMapper.readValue(ticketsNode.toString(), new TypeReference<ArrayList<Ticket>>() {});
+
     }
 
     public static void minFlightTimeBetweenCities(List<Ticket> tickets){
@@ -47,7 +44,7 @@ public class App
                     .collect(Collectors.groupingBy(Ticket::getCarrier,
                             Collectors.collectingAndThen(
                                     Collectors.mapping(
-                                            ticket -> calculateDuration(ticket.getDepartureTime(), ticket.getArrivalTime()),
+                                            ticket -> calculateDuration(ticket),
                                             Collectors.minBy(Duration::compareTo)
                                     ),
                                     Optional::orElseThrow)
@@ -58,10 +55,10 @@ public class App
         }
     }
 
-    public static Duration calculateDuration(String departureTime, String arrivalTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-        LocalTime departure = LocalTime.parse(departureTime, formatter);
-        LocalTime arrival = LocalTime.parse(arrivalTime, formatter);
+    public static Duration calculateDuration(Ticket ticket){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy H:mm");
+        LocalDateTime departure = LocalDateTime.parse(ticket.getDepartureDate() + " " + ticket.getDepartureTime(), formatter);
+        LocalDateTime arrival = LocalDateTime.parse(ticket.getArrivalDate() + " " + ticket.getArrivalTime(), formatter);
 
         return Duration.between(departure, arrival);
     }
