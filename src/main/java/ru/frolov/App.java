@@ -66,7 +66,7 @@ public class App
     private static String formatDuration(Duration duration) {
         long hours = duration.toHours();
         long minutes = duration.toMinutes() % 60;
-        return String.format("%d hours %d minutes", hours, minutes);
+        return String.format("%d часов %d минут", hours, minutes);
     }
 
     public static void differenceBetweenAverageAndMedianPrice(List<Ticket> tickets){
